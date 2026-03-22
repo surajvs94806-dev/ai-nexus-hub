@@ -1,8 +1,7 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, Menu, X, LogOut } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Search, Menu, X, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   { label: "Models", href: "/models" },
@@ -13,14 +12,7 @@ const navLinks = [
 
 export default function Navbar() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
-  };
 
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
@@ -30,6 +22,7 @@ export default function Navbar() {
             <span className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-primary-foreground text-xs font-black">S</span>
             <span className="hidden sm:inline">Suraj AI Hub</span>
           </Link>
+
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((l) => (
               <Link
@@ -50,31 +43,21 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <div className="hidden sm:flex items-center bg-secondary rounded-lg px-3 py-1.5 gap-2 w-64">
             <Search className="w-4 h-4 text-muted-foreground" />
-            <input type="text" placeholder="Search models, datasets..." className="bg-transparent text-sm outline-none w-full placeholder:text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search models, datasets..."
+              className="bg-transparent text-sm outline-none w-full placeholder:text-muted-foreground"
+            />
           </div>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
-
-          {user ? (
-            <>
-              <Button variant="outline" size="sm" className="hidden md:flex" asChild>
-                <Link to="/dashboard">Dashboard</Link>
-              </Button>
-              <Button variant="ghost" size="sm" className="hidden md:flex" onClick={handleSignOut}>
-                <LogOut className="w-4 h-4" />
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="outline" size="sm" className="hidden md:flex" asChild>
-                <Link to="/auth">Sign In</Link>
-              </Button>
-              <Button size="sm" className="hidden md:flex" asChild>
-                <Link to="/auth">Sign Up</Link>
-              </Button>
-            </>
-          )}
+          <Button variant="outline" size="sm" className="hidden md:flex">
+            Sign In
+          </Button>
+          <Button size="sm" className="hidden md:flex">
+            Sign Up
+          </Button>
         </div>
       </div>
 
@@ -85,30 +68,18 @@ export default function Navbar() {
             <input type="text" placeholder="Search..." className="bg-transparent text-sm outline-none w-full" />
           </div>
           {navLinks.map((l) => (
-            <Link key={l.href} to={l.href} onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary">
+            <Link
+              key={l.href}
+              to={l.href}
+              onClick={() => setMobileOpen(false)}
+              className="block px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary"
+            >
               {l.label}
             </Link>
           ))}
           <div className="flex gap-2 mt-3">
-            {user ? (
-              <>
-                <Button variant="outline" size="sm" className="flex-1" asChild>
-                  <Link to="/dashboard" onClick={() => setMobileOpen(false)}>Dashboard</Link>
-                </Button>
-                <Button variant="ghost" size="sm" onClick={() => { handleSignOut(); setMobileOpen(false); }}>
-                  <LogOut className="w-4 h-4" />
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button variant="outline" size="sm" className="flex-1" asChild>
-                  <Link to="/auth" onClick={() => setMobileOpen(false)}>Sign In</Link>
-                </Button>
-                <Button size="sm" className="flex-1" asChild>
-                  <Link to="/auth" onClick={() => setMobileOpen(false)}>Sign Up</Link>
-                </Button>
-              </>
-            )}
+            <Button variant="outline" size="sm" className="flex-1">Sign In</Button>
+            <Button size="sm" className="flex-1">Sign Up</Button>
           </div>
         </div>
       )}
