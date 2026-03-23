@@ -1,7 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, MessageSquare } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Search, Menu, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
   { label: "Models", href: "/models" },
@@ -12,7 +13,9 @@ const navLinks = [
 
 export default function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
@@ -52,12 +55,25 @@ export default function Navbar() {
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
-          <Button variant="outline" size="sm" className="hidden md:flex">
-            Sign In
-          </Button>
-          <Button size="sm" className="hidden md:flex">
-            Sign Up
-          </Button>
+          {user ? (
+            <>
+              <span className="hidden md:inline text-sm text-muted-foreground truncate max-w-[150px]">
+                {user.email}
+              </span>
+              <Button variant="outline" size="sm" className="hidden md:flex gap-1" onClick={signOut}>
+                <LogOut className="w-3.5 h-3.5" /> Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" size="sm" className="hidden md:flex" onClick={() => navigate("/auth")}>
+                Sign In
+              </Button>
+              <Button size="sm" className="hidden md:flex" onClick={() => navigate("/auth")}>
+                Sign Up
+              </Button>
+            </>
+          )}
         </div>
       </div>
 
@@ -77,10 +93,16 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <div className="flex gap-2 mt-3">
-            <Button variant="outline" size="sm" className="flex-1">Sign In</Button>
-            <Button size="sm" className="flex-1">Sign Up</Button>
-          </div>
+          {user ? (
+            <Button variant="outline" size="sm" className="w-full" onClick={() => { signOut(); setMobileOpen(false); }}>
+              <LogOut className="w-3.5 h-3.5 mr-1" /> Sign Out
+            </Button>
+          ) : (
+            <div className="flex gap-2 mt-3">
+              <Button variant="outline" size="sm" className="flex-1" onClick={() => { navigate("/auth"); setMobileOpen(false); }}>Sign In</Button>
+              <Button size="sm" className="flex-1" onClick={() => { navigate("/auth"); setMobileOpen(false); }}>Sign Up</Button>
+            </div>
+          )}
         </div>
       )}
     </header>
