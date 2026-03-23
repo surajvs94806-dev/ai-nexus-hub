@@ -10,6 +10,7 @@ import Datasets from "./pages/Datasets";
 import Spaces from "./pages/Spaces";
 import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/datasets" element={<Datasets />} />
           <Route path="/spaces" element={<Spaces />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

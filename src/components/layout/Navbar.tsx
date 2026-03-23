@@ -1,7 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, MessageSquare } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Search, Menu, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
   { label: "Models", href: "/models" },
