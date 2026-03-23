@@ -93,10 +93,16 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <div className="flex gap-2 mt-3">
-            <Button variant="outline" size="sm" className="flex-1">Sign In</Button>
-            <Button size="sm" className="flex-1">Sign Up</Button>
-          </div>
+          {user ? (
+            <Button variant="outline" size="sm" className="w-full" onClick={() => { signOut(); setMobileOpen(false); }}>
+              <LogOut className="w-3.5 h-3.5 mr-1" /> Sign Out
+            </Button>
+          ) : (
+            <div className="flex gap-2 mt-3">
+              <Button variant="outline" size="sm" className="flex-1" onClick={() => { navigate("/auth"); setMobileOpen(false); }}>Sign In</Button>
+              <Button size="sm" className="flex-1" onClick={() => { navigate("/auth"); setMobileOpen(false); }}>Sign Up</Button>
+            </div>
+          )}
         </div>
       )}
     </header>
