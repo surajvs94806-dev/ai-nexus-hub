@@ -55,12 +55,25 @@ export default function Navbar() {
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
-          <Button variant="outline" size="sm" className="hidden md:flex">
-            Sign In
-          </Button>
-          <Button size="sm" className="hidden md:flex">
-            Sign Up
-          </Button>
+          {user ? (
+            <>
+              <span className="hidden md:inline text-sm text-muted-foreground truncate max-w-[150px]">
+                {user.email}
+              </span>
+              <Button variant="outline" size="sm" className="hidden md:flex gap-1" onClick={signOut}>
+                <LogOut className="w-3.5 h-3.5" /> Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" size="sm" className="hidden md:flex" onClick={() => navigate("/auth")}>
+                Sign In
+              </Button>
+              <Button size="sm" className="hidden md:flex" onClick={() => navigate("/auth")}>
+                Sign Up
+              </Button>
+            </>
+          )}
         </div>
       </div>
 
